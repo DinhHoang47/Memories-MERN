@@ -24,4 +24,5 @@ export default makeStyles((theme) => ({
       },
     },
   },
+  border,
 }));

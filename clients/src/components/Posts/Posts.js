@@ -21,18 +21,20 @@ function Posts({ setSelectedCardId }) {
   return isLoading ? (
     <CircularProgress />
   ) : (
-    <Grid
+    <div
       className={classes.mainContainer}
       container
       alignItems="stretch"
       spacing={3}
     >
       {posts?.map((post, index) => (
-        <Grid key={index + 1} item xs={12} sm={12} md={4} lg={3}>
-          <Post setSelectedCardId={setSelectedCardId} post={post} />
-        </Grid>
+        <Post
+          key={index + 1}
+          setSelectedCardId={setSelectedCardId}
+          post={post}
+        />
       ))}
-    </Grid>
+    </div>
   );
 }
 

@@ -5,8 +5,10 @@ import { Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { message } from "antd";
 import useStyle from "./styles";
-import memoriesImg from "../../images/memory-loss.png";
+import memoriesImg from "../../images/camera.png";
 import { LOGOUT } from "../../constants/actionTypes";
+
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 export default function NavBar() {
   const classes = useStyle();
@@ -22,13 +24,13 @@ export default function NavBar() {
   return (
     <>
       {contextHolder}
-      <AppBar className={classes.appBar} position="static" color="inherit">
+      <div className={classes.appBar}>
         <div className={classes.brandContainer}>
           <Typography
             to="/"
             component={Link}
             className={classes.heading}
-            variant="h2"
+            variant="p"
             align="center"
           >
             Memories
@@ -37,7 +39,7 @@ export default function NavBar() {
             className={classes.image}
             src={memoriesImg}
             alt="memories"
-            height="60"
+            height="40"
           />
         </div>
         <Toolbar>
@@ -59,7 +61,7 @@ export default function NavBar() {
                 className={classes.logout}
                 color="secondary"
               >
-                Logout
+                <ExitToAppIcon />
               </Button>
             </div>
           ) : (
@@ -73,7 +75,7 @@ export default function NavBar() {
             </Button>
           )}
         </Toolbar>
-      </AppBar>
+      </div>
     </>
   );
 }

@@ -61,19 +61,54 @@ export default function Home() {
     }
   };
   return (
-    <Grow in>
-      <Container maxWidth="xl">
-        <Grid
+    <div className={classes.gridContainer}>
+      <div className={classes.leftSideBar}>
+        <div className={classes.appBarSearch}>
+          <TextField
+            name="search"
+            variant="outlined"
+            label="Search Memories"
+            fullWidth
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
+            onKeyDown={handleOnKeyDown}
+            value={searchValue}
+          ></TextField>
+          <ChipInput
+            style={{ margin: "10px 0" }}
+            value={tags}
+            onAdd={handleAddTags}
+            onDelete={handleDeleteTags}
+            label="Search Tags"
+            variant="outlined"
+          />
+          <Button
+            onClick={searchPost}
+            color="primary"
+            className={classes.searchButton}
+            variant="contained"
+          >
+            Search
+          </Button>
+        </div>
+        <div>
+          <Pagination page={page} />
+        </div>
+      </div>
+      <Posts setSelectedCardId={setSelectedCardId} />
+    </div>
+  );
+}
+
+{
+  /* <Grid
           container
           className={classes.gridContainer}
           justifyContent="space-between"
           spacing={3}
         >
-          <Grid item xs={12} sm={6} md={9}>
-            <Posts setSelectedCardId={setSelectedCardId} />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid className={classes.leftSideBar} item xs={12} sm={6} md={3}>
             <AppBar
               className={classes.appBarSearch}
               position="static"
@@ -115,8 +150,9 @@ export default function Home() {
               <Pagination page={page} />
             </Paper>
           </Grid>
-        </Grid>
-      </Container>
-    </Grow>
-  );
+
+          <Grid className={classes.mainContent} item xs={12} sm={6} md={9}>
+            <Posts setSelectedCardId={setSelectedCardId} />
+          </Grid>
+        </Grid> */
 }

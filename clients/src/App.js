@@ -25,19 +25,17 @@ const App = () => {
         />
       </Helmet>
       <Router>
-        <Container style={{ marginBottom: "150px" }} maxWidth="xl">
-          <NavBar />
-          <Routes>
-            <Route path="/" exact element={<Navigate to={"/posts"} />} />
-            <Route path="/posts" exact element={<Home />} />
-            <Route path="/posts/search" exact element={<Home />} />
-            <Route path="/posts/:id" exact element={<PostDetails />} />
-            <Route
-              path="/auth"
-              element={loginUser ? <Auth /> : <Navigate to="/posts" replace />}
-            />
-          </Routes>
-        </Container>
+        <NavBar />
+        <Routes>
+          <Route path="/" exact element={<Navigate to={"/posts"} />} />
+          <Route path="/posts" exact element={<Home />} />
+          <Route path="/posts/search" exact element={<Home />} />
+          <Route path="/posts/:id" exact element={<PostDetails />} />
+          <Route
+            path="/auth"
+            element={loginUser ? <Auth /> : <Navigate to="/posts" replace />}
+          />
+        </Routes>
       </Router>
     </>
   );
