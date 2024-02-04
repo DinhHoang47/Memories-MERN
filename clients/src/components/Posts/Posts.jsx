@@ -1,12 +1,12 @@
 import React from "react";
-import Post from "../Posts/Post/Post";
+import Post from "./Post/Post";
 import { Grid, CircularProgress } from "@mui/material";
 import useStyle from "./styles";
 
 import { useSelector } from "react-redux";
 import { Paper, Typography } from "@material-ui/core";
 
-function Posts({ setSelectedCardId }) {
+function Posts({ setSelectedCardId,setOpenAddNewPost }) {
   const classes = useStyle();
   const { posts, isLoading } = useSelector((state) => state.posts);
   if (!isLoading && posts.length === 0) {
@@ -19,7 +19,9 @@ function Posts({ setSelectedCardId }) {
     );
   }
   return isLoading ? (
-    <CircularProgress />
+    <div className={classes.loadingContainer}>
+      <CircularProgress />
+    </div>
   ) : (
     <div
       className={classes.mainContainer}
@@ -27,13 +29,16 @@ function Posts({ setSelectedCardId }) {
       alignItems="stretch"
       spacing={3}
     >
-      {posts?.map((post, index) => (
-        <Post
-          key={index + 1}
-          setSelectedCardId={setSelectedCardId}
-          post={post}
-        />
-      ))}
+      <div className={classes.responsiveContainer}>
+        {posts?.map((post, index) => (
+          <Post
+          setOpenAddNewPost={setOpenAddNewPost}
+            key={index + 1}
+            setSelectedCardId={setSelectedCardId}
+            post={post}
+          />
+        ))}
+      </div>
     </div>
   );
 }

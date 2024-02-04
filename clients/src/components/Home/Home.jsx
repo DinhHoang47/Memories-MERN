@@ -11,8 +11,11 @@ import {
   TextField,
   Button,
   Paper,
+  Modal,
 } from "@mui/material";
 import ChipInput from "material-ui-chip-input";
+import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import CancelIcon from "@material-ui/icons/Cancel";
 
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
@@ -33,6 +36,7 @@ export default function Home() {
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [tags, setTags] = useState([]);
+  const [openAddNewPost, setOpenAddNewPost] = useState(false);
 
   const handleOnKeyDown = (e) => {
     if (e.keyCode === 13) {
@@ -96,10 +100,66 @@ export default function Home() {
           <Pagination page={page} />
         </div>
       </div>
-      <Posts setSelectedCardId={setSelectedCardId} />
+      <AddNewPostModal
+        classes={classes}
+        openModal={openAddNewPost}
+        setOpenModal={setOpenAddNewPost}
+        selectedCardId={selectedCardId}
+        setSelectedCardId={setSelectedCardId}
+      />
+      <Posts
+        setOpenAddNewPost={setOpenAddNewPost}
+        setSelectedCardId={setSelectedCardId}
+      />
+      <AddNewPostsButton
+        setOpenAddNewPost={setOpenAddNewPost}
+        classes={classes}
+      />
     </div>
   );
 }
+
+const AddNewPostsButton = ({ classes, setOpenAddNewPost }) => {
+  return (
+    <div
+      onClick={() => {
+        setOpenAddNewPost((pre) => {
+          return !pre;
+        });
+      }}
+      className={classes.addNewPostButton}
+    >
+      <AddAPhotoIcon className={classes.addNewPostButtonIcon} />
+    </div>
+  );
+};
+
+const AddNewPostModal = ({
+  openModal,
+  setOpenModal,
+  classes,
+  selectedCardId,
+  setSelectedCardId,
+}) => {
+  return (
+    <Modal open={openModal}>
+      <div className={classes.addNewPostModal}>
+        <div
+          onClick={() => {
+            setOpenModal(false);
+          }}
+          className={classes.modalCloseButton}
+        >
+          <CancelIcon />
+        </div>
+        <Form
+          selectedCardId={selectedCardId}
+          setSelectedCardId={setSelectedCardId}
+        />
+      </div>
+    </Modal>
+  );
+};
 
 {
   /* <Grid

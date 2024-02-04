@@ -54,13 +54,12 @@ function Form({ selectedCardId, setSelectedCardId }) {
   }, [editingPost]);
   if (Object.keys(loginUser).length === 0) {
     return (
-      <Paper elevation={6} className={classes.paper}>
+      <div className="">
         <Typography variant="h6">Login to create your own post</Typography>
-      </Paper>
+      </div>
     );
   } else {
     return (
-      <Paper elevation={6} className={classes.paper}>
         <form
           autoComplete="off"
           noValidate
@@ -129,7 +128,6 @@ function Form({ selectedCardId, setSelectedCardId }) {
             Clear
           </Button>
         </form>
-      </Paper>
     );
   }
 }

@@ -21,7 +21,7 @@ import noImg from "../../../images/no-image-200.svg";
 import { deletePost, likePost } from "../../../actions/posts";
 import { Link, useNavigate } from "react-router-dom";
 
-function Post({ post, setSelectedCardId }) {
+function Post({ post, setSelectedCardId ,setOpenAddNewPost}) {
   const classes = useStyle();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -154,6 +154,7 @@ function Post({ post, setSelectedCardId }) {
               onClick={(e) => {
                 e.preventDefault();
                 setSelectedCardId(post._id);
+                setOpenAddNewPost(true)
               }}
             >
               <MoreHorizIcon fontSize="medium"></MoreHorizIcon>
