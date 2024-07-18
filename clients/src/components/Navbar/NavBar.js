@@ -5,7 +5,7 @@ import { Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { message } from "antd";
 import useStyle from "./styles";
-import memoriesImg from "../../images/camera.png";
+import memoriesImg from "../../images/picture.png";
 import { LOGOUT } from "../../constants/actionTypes";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";

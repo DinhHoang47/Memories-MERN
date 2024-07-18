@@ -3,16 +3,7 @@ import { useState } from "react";
 import { getPostsBySearch } from "../../actions/posts";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  Container,
-  Grow,
-  Grid,
-  AppBar,
-  TextField,
-  Button,
-  Paper,
-  Modal,
-} from "@mui/material";
+import { Grid, AppBar, TextField, Button, Paper } from "@mui/material";
 import ChipInput from "material-ui-chip-input";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -65,9 +56,18 @@ export default function Home() {
     }
   };
   return (
-    <div className={classes.gridContainer}>
-      <div className={classes.leftSideBar}>
-        <div className={classes.appBarSearch}>
+    <Grid
+      container
+      className={classes.gridContainer}
+      justifyContent="space-between"
+      spacing={3}
+    >
+      <Grid className={classes.leftSideBar} item xs={12} sm={6} md={3}>
+        <AppBar
+          className={classes.appBarSearch}
+          position="static"
+          color="inherit"
+        >
           <TextField
             name="search"
             variant="outlined"
@@ -95,124 +95,59 @@ export default function Home() {
           >
             Search
           </Button>
-        </div>
-        <div>
+        </AppBar>
+        <Form
+          setSelectedCardId={setSelectedCardId}
+          selectedCardId={selectedCardId}
+        />
+        <Paper className={classes.pagination} elevation={6}>
           <Pagination page={page} />
-        </div>
-      </div>
-      <AddNewPostModal
-        classes={classes}
-        openModal={openAddNewPost}
-        setOpenModal={setOpenAddNewPost}
-        selectedCardId={selectedCardId}
-        setSelectedCardId={setSelectedCardId}
-      />
-      <Posts
-        setOpenAddNewPost={setOpenAddNewPost}
-        setSelectedCardId={setSelectedCardId}
-      />
-      <AddNewPostsButton
-        setOpenAddNewPost={setOpenAddNewPost}
-        classes={classes}
-      />
-    </div>
+        </Paper>
+      </Grid>
+
+      <Grid className={classes.mainContent} item xs={12} sm={6} md={9}>
+        <Posts setSelectedCardId={setSelectedCardId} />
+      </Grid>
+    </Grid>
   );
 }
 
-const AddNewPostsButton = ({ classes, setOpenAddNewPost }) => {
-  return (
-    <div
-      onClick={() => {
-        setOpenAddNewPost((pre) => {
-          return !pre;
-        });
-      }}
-      className={classes.addNewPostButton}
-    >
-      <AddAPhotoIcon className={classes.addNewPostButtonIcon} />
-    </div>
-  );
-};
-
-const AddNewPostModal = ({
-  openModal,
-  setOpenModal,
-  classes,
-  selectedCardId,
-  setSelectedCardId,
-}) => {
-  return (
-    <Modal open={openModal}>
-      <div className={classes.addNewPostModal}>
-        <div
-          onClick={() => {
-            setOpenModal(false);
-          }}
-          className={classes.modalCloseButton}
-        >
-          <CancelIcon />
-        </div>
-        <Form
-          selectedCardId={selectedCardId}
-          setSelectedCardId={setSelectedCardId}
-        />
-      </div>
-    </Modal>
-  );
-};
-
 {
-  /* <Grid
-          container
-          className={classes.gridContainer}
-          justifyContent="space-between"
-          spacing={3}
-        >
-          <Grid className={classes.leftSideBar} item xs={12} sm={6} md={3}>
-            <AppBar
-              className={classes.appBarSearch}
-              position="static"
-              color="inherit"
-            >
-              <TextField
-                name="search"
-                variant="outlined"
-                label="Search Memories"
-                fullWidth
-                onChange={(e) => {
-                  setSearchValue(e.target.value);
-                }}
-                onKeyDown={handleOnKeyDown}
-                value={searchValue}
-              ></TextField>
-              <ChipInput
-                style={{ margin: "10px 0" }}
-                value={tags}
-                onAdd={handleAddTags}
-                onDelete={handleDeleteTags}
-                label="Search Tags"
-                variant="outlined"
-              />
-              <Button
-                onClick={searchPost}
-                color="primary"
-                className={classes.searchButton}
-                variant="contained"
-              >
-                Search
-              </Button>
-            </AppBar>
-            <Form
-              setSelectedCardId={setSelectedCardId}
-              selectedCardId={selectedCardId}
-            />
-            <Paper className={classes.pagination} elevation={6}>
-              <Pagination page={page} />
-            </Paper>
-          </Grid>
-
-          <Grid className={classes.mainContent} item xs={12} sm={6} md={9}>
-            <Posts setSelectedCardId={setSelectedCardId} />
-          </Grid>
-        </Grid> */
+  /* <div className={classes.gridContainer}>
+<div className={classes.leftSideBar}>
+  <div className={classes.appBarSearch}>
+    <TextField
+      name="search"
+      variant="outlined"
+      label="Search Memories"
+      fullWidth
+      onChange={(e) => {
+        setSearchValue(e.target.value);
+      }}
+      onKeyDown={handleOnKeyDown}
+      value={searchValue}
+    ></TextField>
+    <ChipInput
+      style={{ margin: "10px 0" }}
+      value={tags}
+      onAdd={handleAddTags}
+      onDelete={handleDeleteTags}
+      label="Search Tags"
+      variant="outlined"
+    />
+    <Button
+      onClick={searchPost}
+      color="primary"
+      className={classes.searchButton}
+      variant="contained"
+    >
+      Search
+    </Button>
+  </div>
+  <div>
+    <Pagination page={page} />
+  </div>
+</div>
+<Posts setSelectedCardId={setSelectedCardId} />
+</div> */
 }

@@ -19,7 +19,6 @@ app.use("/user", userRouter);
 // connect app to mongodb
 
 const PORT = process.env.PORT || 5000;
-
 mongoose
   .connect(process.env.CONNECTION_URL, {
     useNewUrlParser: true,
