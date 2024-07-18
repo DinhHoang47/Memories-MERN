@@ -13,6 +13,7 @@ import Home from "./components/Home/Home";
 import Auth from "./components/Auth/Auth";
 import PostDetails from "./components/PostDetails/PostDetails";
 import { useSelector } from "react-redux";
+import { HomeLayout } from "./layouts/HomeLayout/HomeLayout";
 
 const App = () => {
   const loginUser = useSelector((state) => state.profile);
@@ -25,11 +26,12 @@ const App = () => {
         />
       </Helmet>
       <Router>
-        <NavBar />
         <Routes>
-          <Route path="/" exact element={<Navigate to={"/posts"} />} />
-          <Route path="/posts" exact element={<Home />} />
-          <Route path="/posts/search" exact element={<Home />} />
+          <Route path="/" element={<HomeLayout />}>
+            <Route path="" exact element={<Navigate to={"/posts"} />} />
+            <Route path="posts" exact element={<Home />} />
+            <Route path="posts/search" exact element={<Home />} />
+          </Route>
           <Route path="/posts/:id" exact element={<PostDetails />} />
           <Route
             path="/auth"
