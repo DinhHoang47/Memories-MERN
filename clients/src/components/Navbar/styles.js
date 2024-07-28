@@ -3,26 +3,38 @@ import { deepPurple } from "@material-ui/core/colors";
 
 export default makeStyles((theme) => ({
   appBar: {
-    "&&": {
-      display: "flex",
-      flexDirection: "row",
-      position: "sticky",
-      zIndex: 10,
-      top: 0,
-      left: 0,
-      justifyContent: "space-between",
-      alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+    position: "sticky",
+    zIndex: 30,
+    top: 0,
+    left: 0,
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "4px 16px",
+    height: "64px",
+    backgroundColor: "white",
+    borderBottom: "solid 1px #52586633",
+    [theme.breakpoints.up("sm")]: {
       padding: "4px 50px",
-      height: "64px",
-      backgroundColor: "white",
-      borderBottom: "solid 1px #52586633",
     },
   },
-  heading: {
+  appBar__sidebar_toggle: {
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+    },
+    display: "block",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+  },
+  appBar_logo: {
+    [theme.breakpoints.up("sm")]: {},
     color: "#565EEC",
     textDecoration: "none",
     fontSize: "2rem",
     fontWeight: 700,
+    display: "none",
   },
   image: {
     marginLeft: "15px",

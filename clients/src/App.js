@@ -28,9 +28,22 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<HomeLayout />}>
-            <Route path="" exact element={<Navigate to={"/posts"} />} />
-            <Route path="posts" exact element={<Home />} />
-            <Route path="posts/search" exact element={<Home />} />
+            <Route
+              path=""
+              exact
+              element={<Navigate to={"/posts/mostliked"} />}
+            />
+            <Route
+              path="posts/mostliked"
+              exact
+              element={<Home type={"mostliked"} />}
+            />
+            <Route path="posts/liked" exact element={<Home type={"liked"} />} />
+            <Route
+              path="posts/mymemories"
+              exact
+              element={<Home type={"mymemories"} />}
+            />
           </Route>
           <Route path="/posts/:id" exact element={<PostDetails />} />
           <Route

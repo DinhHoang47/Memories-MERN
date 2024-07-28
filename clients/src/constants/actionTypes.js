@@ -14,3 +14,7 @@ export const END_LOADING = "END_LOADING";
 // Post actions
 export const FETCH_POST = "FETCH_POST";
 export const ADD_COMMENT = "ADD_COMMENT";
+// UI actions
+// Sidebar
+export const TOGGLE_SIDEBAR = "TOGGLE_SIDEBAR";
+export const TOGGLE_ADDPOSTMODAL = "TOGGLE_ADDPOSTMODAL";

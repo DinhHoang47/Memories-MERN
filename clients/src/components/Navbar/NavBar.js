@@ -7,8 +7,10 @@ import { message } from "antd";
 import useStyle from "./styles";
 import memoriesImg from "../../images/picture.png";
 import { LOGOUT } from "../../constants/actionTypes";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { toggleSidebar } from "../../actions/ui";
 
 export default function NavBar() {
   const classes = useStyle();
@@ -26,10 +28,16 @@ export default function NavBar() {
       {contextHolder}
       <div className={classes.appBar}>
         <div className={classes.brandContainer}>
+          <button
+            onClick={() => dispatch(toggleSidebar())}
+            className={classes.appBar__sidebar_toggle}
+          >
+            <MenuRoundedIcon />
+          </button>
           <Typography
             to="/"
             component={Link}
-            className={classes.heading}
+            className={classes.appBar_logo}
             variant="p"
             align="center"
           >

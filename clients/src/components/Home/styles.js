@@ -1,50 +1,22 @@
 import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
-  [theme.breakpoints.down("sm")]: {
-    mainContainer: {
-      "&&": {
-        flexDirection: "column-reverse",
-      },
-    },
-  },
-  mainContainer: {
-    flexGrow: 1,
-  },
-  appBarSearch: {
-    display: "flex",
-    flexDirection: "column",
-    borderRadius: 4,
-    marginBottom: "1rem",
-    display: "flex",
-    padding: "16px",
-    marginTop: "32px",
-  },
-  pagination: {
-    borderRadius: 4,
-    marginTop: "1rem",
-    padding: "16px",
-  },
-  gridContainer: {
+  home: {},
+  posts: {
+    background: "dodgerblue",
+    margin: "0 auto",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 290px))",
+    gridGap: "1rem",
+    padding: "1rem",
+    justifyContent: "center",
+    maxWidth: "2080px",
+    margin: "0 auto",
     position: "relative",
-    paddingLeft: "279px",
   },
-  leftSideBar: {
-    position: "fixed",
-    top: "64px",
-    left: 0,
-    backgroundColor: "white",
-    height: "calc(100vh - 64px)",
-    width: "279px",
-    borderRight: "solid 1px #52586633",
-  },
-  mainContent: {
-    flexGrow: 1,
-    "!important": true,
-  },
-  test: {
-    backgroundColor: "red",
-    width: "full",
-    height: "100px",
+  post: {
+    height: "200px",
+    width: "290px",
+    background: "orange",
   },
 }));
