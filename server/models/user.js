@@ -13,6 +13,7 @@ const userSchema = mongoose.Schema({
     default: () => new Date(),
   },
   iss: String,
+  likedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "PostMessage" }],
 });
 // Hash password before saving user information
 

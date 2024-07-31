@@ -6,14 +6,20 @@ import "dotenv/config";
 
 import postRouter from "./routes/post.js";
 import userRouter from "./routes/user.js";
+import { auth } from "./middlewares/auth.js";
+import { getLikedPosts, getMyPosts } from "./controllers/post.js";
 
 const app = express();
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
-
+app.get("/", (req, res) => {
+  res.send("Welcome to memories api");
+});
 app.use("/posts", postRouter);
+app.get("/myposts", auth, getMyPosts);
+app.get("/likedposts", auth, getLikedPosts);
 app.use("/user", userRouter);
 
 // connect app to mongodb

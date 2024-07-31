@@ -2,6 +2,10 @@ import PostMessage from "../models/postMessage.js";
 import User from "../models/user.js";
 import mongoose from "mongoose";
 
+// CONST define
+
+const LIMIT = 8;
+
 // POSTS END POINTS
 
 export const getPostsBySearch = async (req, res) => {
@@ -23,8 +27,7 @@ export const getPostsBySearch = async (req, res) => {
 
 export const getPosts = async (req, res) => {
   try {
-    const { page } = req.query;
-    const LIMIT = 8;
+    const { page, name } = req.query;
     // Get the starting index of every page
     const startIndex = (Number(page) - 1) * LIMIT;
     // Get total post in order to get total pages later
@@ -104,22 +107,76 @@ export const deletePost = async (req, res) => {
   }
 };
 
+export const getMyPosts = async (req, res) => {
+  const { page } = req.params;
+  const userId = req.userId;
+  // Check if userId valid
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).send("Invalid UserId");
+  }
+  try {
+    const totalPages = await PostMessage.countDocuments({ creator: userId });
+    const posts = await PostMessage.find({ creator: userId }).sort({
+      createdAt: -1,
+    });
+    res.json({
+      data: posts,
+      numberOfPages: Math.ceil(totalPages / LIMIT),
+      currentPage: Number(page),
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getLikedPosts = async (req, res) => {
+  const { page = 1 } = req.params;
+  const userId = req.userId;
+  // Check if userId valid
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).send("Invalid UserId");
+  }
+  try {
+    // Get user liked posts by populate
+    const user = await User.findById(userId).populate("likedPosts");
+    console.log("user: ", user);
+    const totalPages = user.likedPosts.length;
+    // Get user's liked posts
+    const posts = user.likedPosts.slice((page - 1) * LIMIT, page * LIMIT);
+    res.json({
+      data: posts,
+      numberOfPages: Math.ceil(totalPages / LIMIT),
+      currentPage: Number(page),
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 export const likePost = async (req, res) => {
   try {
+    const userId = req.userId;
     const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (
+      !mongoose.Types.ObjectId.isValid(id) ||
+      !mongoose.Types.ObjectId.isValid(userId)
+    ) {
       return res.status(404).send("Post Id not found");
     }
 
     const post = await PostMessage.findById(id);
+    const user = await User.findById(userId);
 
     const index = post.likes.findIndex(
       (currentId) => currentId === String(req.userId)
     );
-
+    // Find if user id exists in likes array . If true push else remove id
     if (index === -1) {
       post.likes.push(req.userId);
+      user.likedPosts.push(id);
     } else {
+      const likedIndex = user.likedPosts.indexOf(id);
+      user.likedPosts.splice(likedIndex, 1);
       post.likes = post.likes.filter(
         (currentId) => currentId !== String(req.userId)
       );
@@ -128,8 +185,10 @@ export const likePost = async (req, res) => {
     const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
       new: true,
     });
-
-    res.status(200).json(updatedPost);
+    const updatedUser = await User.findByIdAndUpdate(userId, user, {
+      new: true,
+    });
+    res.status(200).json({ updatedPost, updatedUser });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error" });

@@ -12,6 +12,7 @@ import Pagination from "../Pagination";
 
 import useStyle from "./styles";
 import AddPostModal from "../AddPostModal/AddPostModal";
+import usePost from "../../hooks/usePost";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -19,6 +20,8 @@ function useQuery() {
 
 export default function Home({ type }) {
   const classes = useStyle();
+  const [posts, loading, error] = usePost("home", 1);
+  console.log("posts: ", posts);
   return (
     <div className={classes.home}>
       <div className={classes.posts}>

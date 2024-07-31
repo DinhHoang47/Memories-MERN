@@ -31,18 +31,19 @@ API.interceptors.request.use((req) => {
 
 export const fetchPosts = async (type, page = 1, query = "") => {
   let url;
+  const params = { page, query };
   switch (type) {
-    case "mostliked":
-      url = `/posts/mostliked?page=${page}`;
+    case "home":
+      url = `/posts`;
       break;
-    case "liked":
-      url = `/posts/liked?page=${page}`;
+    case "mypost":
+      url = `/myposts`;
       break;
-    case "myposts":
-      url = `/posts/myposts?page=${page}`;
+    case "likedposts":
+      url = `/likedposts`;
       break;
     case "search":
-      url = `/posts/search?name=${query}&page=${page}`;
+      url = `/posts/search`;
     default:
       throw new Error(`Invalid post type: ${type}`);
   }
