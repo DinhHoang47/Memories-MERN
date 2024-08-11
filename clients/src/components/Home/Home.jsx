@@ -1,18 +1,12 @@
 import React from "react";
-import { useState } from "react";
-import { getPostsBySearch } from "../../actions/posts";
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Grid, AppBar, TextField, Button, Paper } from "@mui/material";
-import ChipInput from "material-ui-chip-input";
-
-import Posts from "../Posts/Posts";
-import Form from "../Form/Form";
-import Pagination from "../Pagination";
+import { Link, useLocation } from "react-router-dom";
 
 import useStyle from "./styles";
 import AddPostModal from "../AddPostModal/AddPostModal";
 import usePost from "../../hooks/usePost";
+import PostDetailModal from "../PostDetailModal/PostDetailModal";
+import { useDispatch } from "react-redux";
+import { togglePostDetail } from "../../actions/ui";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -20,27 +14,44 @@ function useQuery() {
 
 export default function Home({ type }) {
   const classes = useStyle();
-  const [posts, loading, error] = usePost("home", 1);
+  const { posts, loading, error } = usePost(type, 1);
+  console.log("loading: ", loading);
   console.log("posts: ", posts);
   return (
     <div className={classes.home}>
       <div className={classes.posts}>
-        <Post classes={classes} />
-        <Post classes={classes} />
-        <Post classes={classes} />
-        <Post classes={classes} />
-        <Post classes={classes} />
-        <Post classes={classes} />
-        <Post classes={classes} />
-        <Post classes={classes} />
+        {posts.map((item) => (
+          <Post key={item._id} data={item} classes={classes} />
+        ))}
       </div>
       <AddPostModal />
+      <PostDetailModal />
     </div>
   );
 }
 
-const Post = ({ classes }) => {
-  return <div className={classes.post}></div>;
+const Post = ({ classes, data }) => {
+  const dispatch = useDispatch();
+  const handleViewPostDetail = () => {
+    console.log("dispatch");
+    window.history.pushState({}, "", `/posts/${data._id}`);
+    dispatch(togglePostDetail());
+  };
+  return (
+    <div className={classes.post}>
+      <div onClick={handleViewPostDetail}>{data.title}</div>
+      <p>{data.message}</p>
+    </div>
+  );
+};
+
+const getPostType = (type) => {
+  let postType;
+  switch (type) {
+    case "mostliked":
+    default:
+      break;
+  }
 };
 
 {

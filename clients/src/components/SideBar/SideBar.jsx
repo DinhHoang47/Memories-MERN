@@ -3,9 +3,9 @@ import useStyle from "./styles";
 import { Link } from "react-router-dom";
 const MenuItem = [
   {
-    id: "mostliked",
-    to: "/posts/mostliked",
-    title: "Most Liked",
+    id: "posts",
+    to: "/posts",
+    title: "Home",
   },
   {
     id: "liked",
@@ -14,7 +14,7 @@ const MenuItem = [
   },
   {
     id: "mymemories",
-    to: "/posts/mymemories",
+    to: "/posts/myposts",
     title: "My Memories",
   },
 ];

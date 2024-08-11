@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import useStyle from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../../actions/ui";

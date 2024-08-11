@@ -14,6 +14,7 @@ import Auth from "./components/Auth/Auth";
 import PostDetails from "./components/PostDetails/PostDetails";
 import { useSelector } from "react-redux";
 import { HomeLayout } from "./layouts/HomeLayout/HomeLayout";
+import { HOME_POST, LIKED_POST, MY_POST } from "./constants/actionTypes";
 
 const App = () => {
   const loginUser = useSelector((state) => state.profile);
@@ -28,24 +29,20 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<HomeLayout />}>
+            <Route path="" exact element={<Navigate to={"/posts"} />} />
+            <Route path="posts" exact element={<Home type={HOME_POST} />} />
             <Route
-              path=""
+              path="posts/liked"
               exact
-              element={<Navigate to={"/posts/mostliked"} />}
+              element={<Home type={LIKED_POST} />}
             />
             <Route
-              path="posts/mostliked"
+              path="posts/myposts"
               exact
-              element={<Home type={"mostliked"} />}
+              element={<Home type={MY_POST} />}
             />
-            <Route path="posts/liked" exact element={<Home type={"liked"} />} />
-            <Route
-              path="posts/mymemories"
-              exact
-              element={<Home type={"mymemories"} />}
-            />
+            <Route path="/posts/:id" exact element={<PostDetails />} />
           </Route>
-          <Route path="/posts/:id" exact element={<PostDetails />} />
           <Route
             path="/auth"
             element={loginUser ? <Auth /> : <Navigate to="/posts" replace />}

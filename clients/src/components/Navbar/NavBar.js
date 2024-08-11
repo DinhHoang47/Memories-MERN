@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Avatar, Toolbar, Typography } from "@mui/material";
+import { Avatar, Toolbar, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";

@@ -11,7 +11,6 @@ export default makeStyles((theme) => ({
     padding: "1rem",
     justifyContent: "center",
     maxWidth: "2080px",
-    margin: "0 auto",
     position: "relative",
   },
   post: {

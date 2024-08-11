@@ -1,8 +1,13 @@
-import { TOGGLE_ADDPOSTMODAL, TOGGLE_SIDEBAR } from "../constants/actionTypes";
+import {
+  TOGGLE_ADDPOSTMODAL,
+  TOGGLE_SIDEBAR,
+  TOGGLE_POSTDETAILMODAL,
+} from "../constants/actionTypes";
 
 const initialState = {
   isSidebarOpen: false,
   isAddPostModalOpen: false,
+  isPostDetailModalOpen: false,
 };
 
 export default (state = initialState, action) => {
@@ -11,6 +16,8 @@ export default (state = initialState, action) => {
       return { ...state, isSidebarOpen: !state.isSidebarOpen };
     case TOGGLE_ADDPOSTMODAL:
       return { ...state, isAddPostModalOpen: !state.isAddPostModalOpen };
+    case TOGGLE_POSTDETAILMODAL:
+      return { ...state, isPostDetailModalOpen: !state.isPostDetailModalOpen };
     default:
       return state;
   }

@@ -1,7 +1,12 @@
 import axios from "axios";
 import { user } from "../services/localServices";
 import jwt_decode from "jwt-decode";
-import { LOGOUT } from "../constants/actionTypes";
+import {
+  HOME_POST,
+  LIKED_POST,
+  LOGOUT,
+  MY_POST,
+} from "../constants/actionTypes";
 
 const API = axios.create({ baseURL: process.env.REACT_APP_SERVER_BASE_URL });
 
@@ -31,19 +36,19 @@ API.interceptors.request.use((req) => {
 
 export const fetchPosts = async (type, page = 1, query = "") => {
   let url;
-  const params = { page, query };
   switch (type) {
-    case "home":
+    case HOME_POST:
       url = `/posts`;
       break;
-    case "mypost":
+    case MY_POST:
       url = `/myposts`;
       break;
-    case "likedposts":
+    case LIKED_POST:
       url = `/likedposts`;
       break;
     case "search":
       url = `/posts/search`;
+      break;
     default:
       throw new Error(`Invalid post type: ${type}`);
   }
