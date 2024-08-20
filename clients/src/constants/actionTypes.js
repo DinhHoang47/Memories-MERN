@@ -19,6 +19,7 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const TOGGLE_SIDEBAR = "TOGGLE_SIDEBAR";
 export const TOGGLE_ADDPOSTMODAL = "TOGGLE_ADDPOSTMODAL";
 export const TOGGLE_POSTDETAILMODAL = "TOGGLE_POSTDETAILMODAL";
+export const CLOSE_POSTDETAILMODAL = "CLOSE_POSTDETAILMODAL";
 // usePost types
 export const HOME_POST = "homepost";
 export const MY_POST = "mypost";
