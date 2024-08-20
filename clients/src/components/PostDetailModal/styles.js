@@ -56,12 +56,35 @@ export default makeStyles((theme) => ({
       width: "50%",
     },
     background: "white",
-    height: "100px",
+    color: "black",
   },
   postDetail_imageContainer: {
+    padding: "16px",
     width: "100%",
   },
   postDetail_image: {
     width: "100%",
+    borderRadius: "8px",
+  },
+  postDetail_comment: {
+    padding: "16px",
+  },
+  commentItem: {
+    width: "100%",
+    display: "flex",
+  },
+  ommentItem_user: {
+    background: "red",
+  },
+  commentItem_content: {
+    flexGrow: 1,
+  },
+  commentItem_userImg: {
+    width: "36px",
+    height: "36px",
+  },
+  commentItem_content_textarea: {
+    width: "100%",
+    height: "64px",
   },
 }));
