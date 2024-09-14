@@ -1,24 +1,30 @@
 import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
+  "@keyframes blowUpModal": {
+    "0%": {
+      transform: "scale(0)",
+    },
+    "100%": {
+      transform: "scale(1)",
+    },
+  },
   postDetailModal: (props) => ({
-    position: "fixed",
-    top: "64px",
-    opacity: "0.5",
-    transform: "scale(0)",
+    position: "absolute",
+    top: "0",
+    left: "100%",
     zIndex: "10",
-    backgroundColor: "MediumSeaGreen",
     width: "100%",
     height: "calc(100vh - 64px)",
     borderRadius: "2px",
     color: "white",
     background: "staleblue",
-    transition: "0.7s cubic-bezier(0, 0.98, 0.47, 1)",
+    transition: "0.5s ease ",
     "&.active": {
       left: 0,
-      transform: "scale(1)",
-      opacity: 1,
+      right: 0,
     },
+    overflow: "scroll",
     [theme.breakpoints.up("sm")]: {
       width: "calc(100% - 64px)",
       "&.active": {
@@ -40,19 +46,25 @@ export default makeStyles((theme) => ({
   postDetail: {
     display: "flex",
     flexDirection: "column",
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("lg")]: {
       flexDirection: "row",
     },
   },
   postDetail_left: {
     width: "100%",
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("lg")]: {
       width: "50%",
     },
+    "& .postDetail_info": {
+      padding: "0 16px",
+    },
+  },
+  postDetail_authorImg: {
+    width: "40px",
   },
   postDetail_right: {
     width: "100%",
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("lg")]: {
       width: "50%",
     },
     background: "white",
@@ -68,23 +80,45 @@ export default makeStyles((theme) => ({
   },
   postDetail_comment: {
     padding: "16px",
+    "& .commentItem": {
+      background: "orange",
+      width: "100%",
+      display: "flex",
+      marginTop: "12px",
+      "& .commentItem_user": {
+        background: "red",
+        "& .commentItem_userImg": {
+          width: "40px",
+          height: "40px",
+        },
+      },
+      "& .commentItem_content": {
+        width: "100%",
+        flexGrow: 1,
+        marginLeft: "8px",
+        "& p": {
+          fontWeight: "bold",
+        },
+      },
+    },
+    "& .comment_items": {
+      overflowY: "auto",
+      maxHeight: "600px",
+    },
+    "& .writeComment": {
+      marginTop: "16px",
+      "& input": {
+        width: "100%",
+      },
+    },
   },
-  commentItem: {
-    width: "100%",
-    display: "flex",
+  relatived_post: {
+    padding: "16px",
   },
-  ommentItem_user: {
-    background: "red",
-  },
-  commentItem_content: {
-    flexGrow: 1,
-  },
-  commentItem_userImg: {
-    width: "36px",
-    height: "36px",
-  },
-  commentItem_content_textarea: {
-    width: "100%",
-    height: "64px",
+  relativedPosts: {
+    marginTop: "16px",
+    "& .item": {
+      marginRight: "16px",
+    },
   },
 }));

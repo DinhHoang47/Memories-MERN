@@ -97,11 +97,20 @@ export const commentPost = (id, comment, setComment) => {
     try {
       // data is post that have new updated comment array with new comment
       const { data } = await api.commentPost(id, comment);
-      dispatch({ type: ADD_COMMENT, payload: data });
+      // dispatch({ type: ADD_COMMENT, payload: data });
       setComment("");
-      return data.comments;
+      return data;
     } catch (error) {
       console.log(error);
     }
   };
+};
+
+export const deleteComment = async (postId, commentId) => {
+  try {
+    const response = await api.deleteComment(postId, commentId);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 };

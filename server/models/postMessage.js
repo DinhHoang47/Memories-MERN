@@ -14,10 +14,12 @@ const postSchema = mongoose.Schema({
     type: Array,
     default: [],
   },
-  comments: {
-    type: Array,
-    default: [],
-  },
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId, // Reference to the Comment model
+      ref: "Comment", // Referencing the Comment model
+    },
+  ],
   createdAt: {
     type: Date,
     default: () => new Date(),

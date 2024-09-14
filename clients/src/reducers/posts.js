@@ -9,7 +9,18 @@ import {
   FETCH_POST,
   ADD_COMMENT,
 } from "../constants/actionTypes";
-export default (state = { posts: [], isLoading: true, post: {} }, action) => {
+
+const initialState = {
+  posts: [],
+  isLoading: true,
+  post: {},
+  editingPost: {
+    id,
+    title,
+    content,
+  },
+};
+export default (state = initialState, action) => {
   switch (action.type) {
     case START_LOADING:
       return { ...state, isLoading: true };

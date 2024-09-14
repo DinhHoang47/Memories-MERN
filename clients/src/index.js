@@ -7,6 +7,8 @@ import thunk from "redux-thunk";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "dotenv/config";
 import "./index.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { injectStore } from "./api";
 
 import App from "./App.js";

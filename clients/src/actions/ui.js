@@ -20,3 +20,5 @@ export const togglePostDetail = () => (dispatch) => {
 export const closePostDetail = () => (dispatch) => {
   dispatch({ type: CLOSE_POSTDETAILMODAL });
 };
+
+// Edit post modal

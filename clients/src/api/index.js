@@ -82,6 +82,10 @@ export const commentPost = (id, comment) => {
   return API.patch(`/posts/${id}/commentPost`, { comment });
 };
 
+export const deleteComment = (postId, commentId) => {
+  return API.patch(`/posts/${postId}/deleteComment`, { commentId });
+};
+
 // Post API
 
 export const getPost = (id) => {

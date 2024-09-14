@@ -1,7 +1,15 @@
 import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
-  home: {},
+  home: {
+    "&.active": {
+      "&::-webkit-scrollbar": {
+        display: "none", // Hide scrollbar in WebKit-based browsers (Chrome, Safari)
+      },
+      "-ms-overflow-style": "none", // Hide scrollbar in Internet Explorer 10+
+      "scrollbar-width": "none", // Hide scrollbar in Firefox
+    },
+  },
   posts: {
     background: "dodgerblue",
     margin: "0 auto",
@@ -12,6 +20,10 @@ export default makeStyles((theme) => ({
     justifyContent: "center",
     maxWidth: "2080px",
     position: "relative",
+    "&.active": {
+      height: "calc(100vh - 64px)",
+      overflow: "hidden",
+    },
   },
   post: {
     height: "200px",

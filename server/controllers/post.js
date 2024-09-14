@@ -1,10 +1,11 @@
+import Comment from "../models/comment.js";
 import PostMessage from "../models/postMessage.js";
 import User from "../models/user.js";
 import mongoose from "mongoose";
 
 // CONST define
 
-const LIMIT = 8;
+const LIMIT = 10;
 
 // POSTS END POINTS
 
@@ -35,7 +36,7 @@ export const getPosts = async (req, res) => {
     const posts = await PostMessage.find()
       .sort({ createdAt: -1 })
       .skip(startIndex)
-      .limit(8);
+      .limit(LIMIT);
     res.json({
       data: posts,
       numberOfPages: Math.ceil(total / LIMIT),
@@ -52,7 +53,10 @@ export const getPost = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(404).json({ message: "Post not found" });
     }
-    const post = await PostMessage.findById(_id);
+    const post = await PostMessage.findById(_id).populate({
+      path: "comments", // Populate the comments array
+      populate: { path: "author", select: "name" }, // Populate the author field inside each comment
+    });
     res.status(200).json(post);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -205,18 +209,63 @@ export const commentPost = async (req, res) => {
       return res.status(404).send("Post Id not found");
     }
 
-    const post = await PostMessage.findById(id);
-    const { name, _id } = await User.findById(userId);
-    const newComment = `${name}:${_id}:${comment}`;
-    post.comments.push(newComment);
-
-    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
-      new: true,
+    // Step 1: Create a new comment
+    const newComment = new Comment({
+      author: userId, // Reference the user who created the comment
+      content: comment,
     });
 
-    res.status(200).json(updatedPost);
+    const savedComment = await newComment.save();
+
+    // Step 2: Add the comment's ID to the post's comments array
+    const updatedPost = await PostMessage.findByIdAndUpdate(
+      id,
+      { $push: { comments: savedComment._id } }, // Push the comment ID into the comments array
+      { new: true } // Return the updated document
+    ).populate({
+      path: "comments",
+      populate: { path: "author", select: "name" }, // Populate author in comments
+    }); // Optional: Populate comments with their full data
+
+    console.log("updatedPost: ", updatedPost);
+    res.status(200).json(updatedPost.comments);
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const deleteComment = async (req, res) => {
+  try {
+    const { id: postId } = req.params;
+    const userId = req.userId;
+    const { commentId } = req.body;
+    console.log("commentId: ", commentId);
+
+    // Step 1: Validate IDs
+
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(404).send("Post Id not found");
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      return res.status(404).send("Comment ID not found");
+    }
+
+    // Step 2: Delete the comment from the Comment collection
+    const deletedComment = await Comment.findByIdAndDelete(commentId);
+    if (!deletedComment) {
+      return res.status(404).send("Comment not found");
+    }
+
+    // Step 3: Remove the comment ID from the post's comments array
+    await PostMessage.findByIdAndUpdate(
+      postId,
+      { $pull: { comments: commentId } } // Use $pull to remove the comment ID from the comments array
+    );
+
+    res.status(200).json({ message: "Comment deleted." });
+  } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 };

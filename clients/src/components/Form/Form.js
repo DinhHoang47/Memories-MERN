@@ -44,7 +44,7 @@ function Form({ selectedCardId, setSelectedCardId }) {
 
   const clear = () => {
     setPostData(postDataSchema);
-    setSelectedCardId(null);
+    // setSelectedCardId(null);
   };
 
   useEffect(() => {
