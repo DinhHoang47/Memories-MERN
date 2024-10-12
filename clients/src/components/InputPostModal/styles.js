@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
-  addPostModal: (props) => ({
+  InputPostModal: (props) => ({
     position: "fixed",
     top: "64px",
     left: "-100%",

@@ -2,22 +2,18 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 
 import useStyle from "./styles";
-import AddPostModal from "../AddPostModal/AddPostModal";
+import InputPostModal from "../InputPostModal/InputPostModal";
 import usePost from "../../hooks/usePost";
 import PostDetailModal from "../PostDetailModal/PostDetailModal";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePostDetail } from "../../actions/ui";
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
-
 export default function Home({ type }) {
-  const classes = useStyle();
   const { isPostDetailModalOpen } = useSelector((state) => state.ui);
-  const { posts, loading, error } = usePost(type, 2);
+  const { posts, loading, error, updatePost } = usePost(type, 2);
+  const classes = useStyle();
   return (
-    <div className={`${classes.home} ${isPostDetailModalOpen ? "active" : ""}`}>
+    <div className={`${classes.home}`}>
       <div
         className={`${classes.posts} ${isPostDetailModalOpen ? "active" : ""}`}
       >
@@ -25,8 +21,8 @@ export default function Home({ type }) {
           <Post key={`post-${index}`} data={item} classes={classes} />
         ))}
       </div>
-      <AddPostModal />
       <PostDetailModal />
+      <InputPostModal updatePost={updatePost} />
     </div>
   );
 }

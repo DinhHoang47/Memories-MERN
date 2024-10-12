@@ -10,28 +10,33 @@ import { commentPost, deleteComment } from "../../actions/posts";
 import { useUser } from "../../hooks/useUser";
 import {
   CLOSE_POSTDETAILMODAL,
-  OPEN_ADDPOSTMODAL,
+  OPEN_INPUTPOSTMODAL,
   SET_EDITING_POST_MODE,
 } from "../../constants/actionTypes";
 
 export default function PostDetailModal() {
+  // Method declare
+  const dispatch = useDispatch();
+  // Global state
   const { isPostDetailModalOpen } = useSelector((state) => state.ui);
-  // Get current postId when component is render
+  const { userProfile, isUserLoggedIn } = useUser();
+  const userId = userProfile?._id;
+  // Local state
   const postId = getPostId();
   const {
     data: postData,
     isLoading: isLoadingPostData,
     updateComments,
   } = usePostDetail(postId, isPostDetailModalOpen);
-  console.log("postData: ", postData);
-  const { userProfile, isUserLoggedIn } = useUser();
-  const userId = userProfile?._id;
-  const dispatch = useDispatch();
+  // Styles
   const classes = useStyle({ isPostDetailModalOpen });
+  // Logic handler
+  // Get current postId when component is render
   const handleClose = () => {
     window.history.pushState({}, "", `/posts`);
     dispatch(togglePostDetail());
   };
+  // Debug
   return (
     <div
       className={`${classes.postDetailModal} ${
@@ -86,9 +91,9 @@ export default function PostDetailModal() {
           </div>
           <div className={classes.relatived_post}>
             <p>Relatived posts</p>
-            <RelativedPosts classes={classes} />
+            {/* <RelativedPosts classes={classes} /> */}
           </div>
-          <EditPostButton />
+          <EditPostButton postData={postData} />
           <div style={{ marginTop: "32px" }} className="">
             <button onClick={handleClose}>Close</button>
           </div>
@@ -98,13 +103,18 @@ export default function PostDetailModal() {
   );
 }
 
-const EditPostButton = () => {
+const EditPostButton = ({ postData }) => {
   const dispatch = useDispatch();
+  // Logic handler
   const handleEditPost = () => {
     dispatch({ type: CLOSE_POSTDETAILMODAL });
-    dispatch({ type: OPEN_ADDPOSTMODAL });
-    dispatch({ type: SET_EDITING_POST_MODE, payload: { isEditingPost: true } });
+    dispatch({ type: OPEN_INPUTPOSTMODAL });
+    dispatch({
+      type: SET_EDITING_POST_MODE,
+      payload: { isEditingPost: true, postData },
+    });
   };
+  // Render component
   return (
     <div className="">
       <button onClick={handleEditPost}>Edit post</button>
@@ -128,9 +138,7 @@ const CommentItems = ({
         );
         updateComments(updatedComments);
       }
-    } catch (error) {
-      console.log("error: ", error);
-    }
+    } catch (error) {}
   };
   return (
     <div className="comment_items">
@@ -158,7 +166,6 @@ const WriteComment = ({ dispatch, postId, updateComments }) => {
   const [comment, setComment] = useState("");
   const onSubmitComment = async () => {
     const result = await dispatch(commentPost(postId, comment, setComment));
-    console.log("result: ", result);
     updateComments(result);
   };
   return (
@@ -184,7 +191,6 @@ const WriteComment = ({ dispatch, postId, updateComments }) => {
 
 const CommentItem = ({ data, userId, isUserLoggedIn, handleDeleteComment }) => {
   const { author, content, _id: commentId } = data;
-  console.log("data: ", data);
   // Check if current user is author of comment
   const isAuthor = userId === author._id;
   return (

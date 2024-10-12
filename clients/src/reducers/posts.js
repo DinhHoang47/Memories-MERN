@@ -15,9 +15,9 @@ const initialState = {
   isLoading: true,
   post: {},
   editingPost: {
-    id,
-    title,
-    content,
+    id: "",
+    title: "",
+    content: "",
   },
 };
 export default (state = initialState, action) => {

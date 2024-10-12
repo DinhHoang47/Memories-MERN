@@ -19,6 +19,7 @@ export default makeStyles((theme) => ({
   },
   homelayout_main: {
     background: "green",
+    height: "calc(100vh - 64px)",
     width: "100%",
   },
 }));

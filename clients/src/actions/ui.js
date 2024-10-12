@@ -1,6 +1,7 @@
 import {
   CLOSE_POSTDETAILMODAL,
-  TOGGLE_ADDPOSTMODAL,
+  SET_EDITING_POST_MODE,
+  TOGGLE_INPUTPOSTMODAL,
   TOGGLE_POSTDETAILMODAL,
   TOGGLE_SIDEBAR,
 } from "../constants/actionTypes";
@@ -10,7 +11,11 @@ export const toggleSidebar = () => (dispatch) => {
 };
 
 export const toggleAddPost = () => (dispatch) => {
-  dispatch({ type: TOGGLE_ADDPOSTMODAL });
+  dispatch({ type: TOGGLE_INPUTPOSTMODAL });
+  dispatch({
+    type: SET_EDITING_POST_MODE,
+    payload: { isEditingPost: false },
+  });
 };
 
 export const togglePostDetail = () => (dispatch) => {

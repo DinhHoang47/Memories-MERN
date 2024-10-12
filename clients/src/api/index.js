@@ -66,8 +66,8 @@ export const getPostsBySearch = (queryParams) => {
 
 export const createPost = (newPost) => API.post("/posts", newPost);
 
-export const editPost = (id, post) => {
-  return API.patch(`/posts/${id}`, post);
+export const editPost = (id, updatedPost) => {
+  return API.patch(`/posts/${id}`, updatedPost);
 };
 
 export const deletePost = (id) => {

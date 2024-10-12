@@ -24,19 +24,6 @@ export default makeStyles((theme) => ({
       left: 0,
       right: 0,
     },
-    overflow: "scroll",
-    [theme.breakpoints.up("sm")]: {
-      width: "calc(100% - 64px)",
-      "&.active": {
-        left: "64px",
-      },
-    },
-    [theme.breakpoints.up("md")]: {
-      width: "calc(100% - 240px)",
-      "&.active": {
-        left: "240px",
-      },
-    },
   }),
   postContainer: {
     maxWidth: "2080px",

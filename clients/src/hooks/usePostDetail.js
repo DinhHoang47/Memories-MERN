@@ -13,23 +13,22 @@ const usePostDetail = (postId, doFetch = true) => {
       return { ...pre, comments: newComments };
     });
   };
-
-  // Dùng useEffect để kiểm tra sự thay đổi của postId, khi xảy ra thay đổi thì trigger action fetch data
+  const getPostDetail = async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      const { data: postData } = await getPost(postId);
+      setData(postData);
+      setLoading(false);
+    } catch (error) {
+      setError(true);
+      setLoading(false);
+    }
+  };
+  // Logic lifecycle
   useEffect(() => {
-    const getPostDetail = async () => {
-      setLoading(true);
-      setError(false);
-      try {
-        const { data: postData } = await getPost(postId);
-        setData(postData);
-        setLoading(false);
-      } catch (error) {
-        setError(true);
-        setLoading(false);
-      }
-    };
     doFetch && getPostDetail();
-  }, [postId]);
+  }, [postId, doFetch]);
   return { isLoading, data, error, updateComments };
 };
 

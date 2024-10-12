@@ -7,51 +7,72 @@ import { useDispatch } from "react-redux";
 import { createPost, editPost } from "../../actions/posts";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toggleAddPost } from "@/actions/ui";
 
-function Form({ selectedCardId, setSelectedCardId }) {
-  const classes = useStyle();
-  const navigate = useNavigate();
-  const editingPost = useSelector((state) =>
-    selectedCardId
-      ? state.posts.posts.find((post) => post._id === selectedCardId)
-      : null
-  );
-
-  // Get current loggin user
-  const loginUser = useSelector((state) => state.profile);
-  // Check if user is loggin or not
-
+function Form({
+  isEditingPost,
+  edittingPostData,
+  updatePost,
+  isInputPostModalOpen,
+}) {
+  // Method,schema define
   const postDataSchema = {
     title: "",
     message: "",
     tags: [],
     selectedFile: "",
   };
+  const classes = useStyle();
+  const navigate = useNavigate();
+  // Global state
+  // Get current loggin user
+  const loginUser = useSelector((state) => state.profile);
   const [postData, setPostData] = useState(postDataSchema);
 
-  const dispatch = useDispatch();
+  //  Local state
+  const [errorMessage, setErrorMessage] = useState("");
+  // create a key state for Filebase to force it re-render when reload component
+  const [fileInputKey, setFileInputKey] = useState(Date.now()); // Unique key for FileBase
 
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch();
+  // Logic handler
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const userName = loginUser.name;
-    if (selectedCardId) {
-      dispatch(editPost(selectedCardId, { ...postData, name: userName }));
+    if (isEditingPost) {
+      const result = await updatePost(postData);
+      // Clear form and close modal
+      if (result.success) {
+        setPostData(postDataSchema);
+        // clear the file input element
+        setFileInputKey(Date.now());
+        dispatch(toggleAddPost());
+      } else {
+        setErrorMessage(result.error);
+      }
     } else {
       dispatch(createPost({ ...postData, name: userName }, navigate));
     }
     clear();
   };
-
   const clear = () => {
     setPostData(postDataSchema);
-    // setSelectedCardId(null);
   };
-
+  // Cycle logic handler
   useEffect(() => {
-    if (editingPost) {
-      setPostData(editingPost);
+    if (isEditingPost) {
+      setPostData(edittingPostData);
+    } else {
+      setPostData(postDataSchema);
     }
-  }, [editingPost]);
+  }, [isEditingPost]);
+  useEffect(() => {
+    // Change the file Input Key to force re-render input component
+    setFileInputKey(Date.now());
+  }, [isInputPostModalOpen]);
+  // Debug
+
+  // Render component
   if (Object.keys(loginUser).length === 0) {
     return (
       <Paper elevation={6} className={classes.paper}>
@@ -68,7 +89,7 @@ function Form({ selectedCardId, setSelectedCardId }) {
           onSubmit={handleSubmit}
         >
           <Typography variant="h6">
-            {!selectedCardId ? "Create" : "Edit"} a Memory
+            {!isEditingPost ? "Create" : "Edit"} a Memory
           </Typography>
           <TextField
             name="title"
@@ -102,6 +123,7 @@ function Form({ selectedCardId, setSelectedCardId }) {
           ></TextField>
           <div className={classes.fileInput}>
             <FileBase
+              key={fileInputKey} // Force re-render when key changes
               type="file"
               multiple={false}
               onDone={({ base64 }) =>
