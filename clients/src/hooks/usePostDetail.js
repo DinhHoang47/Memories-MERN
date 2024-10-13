@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { getPost } from "../api";
 import { useDispatch } from "react-redux";
 const usePostDetail = (postId, doFetch = true) => {
+  // Define local variable, methods
+  const controller = new AbortController();
+  const signal = controller.signal;
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [error, setError] = useState(false);
@@ -17,7 +20,7 @@ const usePostDetail = (postId, doFetch = true) => {
     setLoading(true);
     setError(false);
     try {
-      const { data: postData } = await getPost(postId);
+      const { data: postData } = await getPost(postId, signal);
       setData(postData);
       setLoading(false);
     } catch (error) {
@@ -28,6 +31,10 @@ const usePostDetail = (postId, doFetch = true) => {
   // Logic lifecycle
   useEffect(() => {
     doFetch && getPostDetail();
+    // Terminate fetch post data when component unmount
+    return () => {
+      controller.abort();
+    };
   }, [postId, doFetch]);
   return { isLoading, data, error, updateComments };
 };

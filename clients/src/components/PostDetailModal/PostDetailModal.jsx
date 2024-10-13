@@ -13,6 +13,7 @@ import {
   OPEN_INPUTPOSTMODAL,
   SET_EDITING_POST_MODE,
 } from "../../constants/actionTypes";
+import useRelatedPosts from "@/hooks/useRelatedPosts";
 
 export default function PostDetailModal() {
   // Method declare
@@ -31,12 +32,12 @@ export default function PostDetailModal() {
   // Styles
   const classes = useStyle({ isPostDetailModalOpen });
   // Logic handler
-  // Get current postId when component is render
   const handleClose = () => {
     window.history.pushState({}, "", `/posts`);
     dispatch(togglePostDetail());
   };
   // Debug
+  console.log("postData: ", postData);
   return (
     <div
       className={`${classes.postDetailModal} ${
@@ -91,7 +92,14 @@ export default function PostDetailModal() {
           </div>
           <div className={classes.relatived_post}>
             <p>Relatived posts</p>
-            {/* <RelativedPosts classes={classes} /> */}
+            {isPostDetailModalOpen && (
+              <RelativedPosts
+                postTitle={postData?.title}
+                postTags={postData?.tags}
+                postId={postId}
+                classes={classes}
+              />
+            )}
           </div>
           <EditPostButton postData={postData} />
           <div style={{ marginTop: "32px" }} className="">
@@ -217,7 +225,17 @@ const CommentItem = ({ data, userId, isUserLoggedIn, handleDeleteComment }) => {
     </div>
   );
 };
-const RelativedPosts = ({ classes }) => {
+const RelativedPosts = ({ classes, postTags, postTitle, postId }) => {
+  //Local state
+  const [tags, setTags] = useState([]);
+  const [title, setTitle] = useState([]);
+  const { relatedPosts, loading, error } = useRelatedPosts(
+    postTags,
+    postTitle,
+    postId
+  );
+  // Handle logic
+
   var settings = {
     dots: true,
     infinite: false,
@@ -260,24 +278,23 @@ const RelativedPosts = ({ classes }) => {
       },
     ],
   };
+  // Debug
+  console.log("relatedPosts: ", relatedPosts);
   return (
     <div className={classes.relativedPosts}>
       <Slider {...settings}>
-        <RelatedPost />
-        <RelatedPost />
-        <RelatedPost />
-        <RelatedPost />
-        <RelatedPost />
-        <RelatedPost />
+        {relatedPosts.map((item) => (
+          <RelatedPost data={item} key={item._id} />
+        ))}
       </Slider>
     </div>
   );
 };
 
-const RelatedPost = () => {
+const RelatedPost = ({ data }) => {
   return (
     <div style={{ background: "chartreuse" }} className={"item"}>
-      <p>Post title</p>
+      <p>{data?.title}</p>
       <button>Like</button>
     </div>
   );

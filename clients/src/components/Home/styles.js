@@ -9,6 +9,7 @@ export default makeStyles((theme) => ({
       "-ms-overflow-style": "none", // Hide scrollbar in Internet Explorer 10+
       "scrollbar-width": "none", // Hide scrollbar in Firefox
     },
+    overflowX: "hidden",
     position: "relative",
   },
   posts: {
@@ -21,7 +22,6 @@ export default makeStyles((theme) => ({
     justifyContent: "center",
     maxWidth: "2080px",
     position: "relative",
-    height: "calc(100vh - 64px)",
     "&.active": {
       overflow: "hidden",
     },

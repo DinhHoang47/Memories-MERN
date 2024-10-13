@@ -88,8 +88,8 @@ export const deleteComment = (postId, commentId) => {
 
 // Post API
 
-export const getPost = (id) => {
-  return API.get(`/posts/${id}`);
+export const getPost = (id, signal) => {
+  return API.get(`/posts/${id}`, { signal });
 };
 
 // User APIS
