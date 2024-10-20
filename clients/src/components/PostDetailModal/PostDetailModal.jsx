@@ -23,12 +23,12 @@ export default function PostDetailModal() {
   const { userProfile, isUserLoggedIn } = useUser();
   const userId = userProfile?._id;
   // Local state
-  const postId = getPostId();
+  const [currentPostId, setCurrentPostId] = useState(null);
   const {
     data: postData,
     isLoading: isLoadingPostData,
     updateComments,
-  } = usePostDetail(postId, isPostDetailModalOpen);
+  } = usePostDetail(currentPostId, isPostDetailModalOpen);
   // Styles
   const classes = useStyle({ isPostDetailModalOpen });
   // Logic handler
@@ -36,16 +36,32 @@ export default function PostDetailModal() {
     window.history.pushState({}, "", `/posts`);
     dispatch(togglePostDetail());
   };
+  // Lifecycle logics
+  let postId = getPostId();
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPostId(getPostId());
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    if (postId) {
+      setCurrentPostId(postId);
+    }
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [postId]);
   // Debug
-  console.log("postData: ", postData);
   return (
     <div
       className={`${classes.postDetailModal} ${
         isPostDetailModalOpen ? "active" : ""
       }`}
     >
-      <div className="modal-background">
-        <div className={classes.postContainer}>
+      <div className="container">
+        <div
+          className={`${classes.postContainer} ${
+            isPostDetailModalOpen ? "active" : ""
+          }`}
+        >
           <div className={classes.postDetail}>
             <div className={classes.postDetail_left}>
               <div className={classes.postDetail_imageContainer}>
@@ -72,7 +88,7 @@ export default function PostDetailModal() {
               <div className={classes.postDetail_comment}>
                 <h3>Comments</h3>
                 <CommentItems
-                  postId={postId}
+                  postId={currentPostId}
                   isUserLoggedIn={isUserLoggedIn}
                   userId={userId}
                   comments={postData?.comments}
@@ -81,7 +97,7 @@ export default function PostDetailModal() {
                 {isUserLoggedIn ? (
                   <WriteComment
                     dispatch={dispatch}
-                    postId={postId}
+                    postId={currentPostId}
                     updateComments={updateComments}
                   />
                 ) : (
@@ -94,9 +110,10 @@ export default function PostDetailModal() {
             <p>Relatived posts</p>
             {isPostDetailModalOpen && (
               <RelativedPosts
+                setCurrentPostId={setCurrentPostId}
                 postTitle={postData?.title}
                 postTags={postData?.tags}
-                postId={postId}
+                postId={currentPostId}
                 classes={classes}
               />
             )}
@@ -225,7 +242,13 @@ const CommentItem = ({ data, userId, isUserLoggedIn, handleDeleteComment }) => {
     </div>
   );
 };
-const RelativedPosts = ({ classes, postTags, postTitle, postId }) => {
+const RelativedPosts = ({
+  classes,
+  postTags,
+  postTitle,
+  postId,
+  setCurrentPostId,
+}) => {
   //Local state
   const [tags, setTags] = useState([]);
   const [title, setTitle] = useState([]);
@@ -278,25 +301,48 @@ const RelativedPosts = ({ classes, postTags, postTitle, postId }) => {
       },
     ],
   };
+
   // Debug
-  console.log("relatedPosts: ", relatedPosts);
   return (
     <div className={classes.relativedPosts}>
       <Slider {...settings}>
         {relatedPosts.map((item) => (
-          <RelatedPost data={item} key={item._id} />
+          <RelatedPost
+            setCurrentPostId={setCurrentPostId}
+            data={item}
+            key={item._id}
+          />
         ))}
       </Slider>
     </div>
   );
 };
 
-const RelatedPost = ({ data }) => {
+const RelatedPost = ({ data, setCurrentPostId }) => {
+  const handleOpenPost = () => {
+    window.history.replaceState(null, "", `/posts/${data._id}`);
+    setCurrentPostId(data._id);
+  };
+
   return (
-    <div style={{ background: "chartreuse" }} className={"item"}>
-      <p>{data?.title}</p>
-      <button>Like</button>
-    </div>
+    <>
+      <style jsx={"true"}>{`
+        .hover-underline {
+          text-decoration: none;
+          cursor: pointer;
+          transition: text-decoration 0.2s;
+        }
+        .hover-underline:hover {
+          text-decoration: underline;
+        }
+      `}</style>
+      <div style={{ background: "chartreuse" }} className={"item"}>
+        <p className="hover-underline" onClick={handleOpenPost}>
+          {data?.title}
+        </p>
+        <button>Like</button>
+      </div>
+    </>
   );
 };
 

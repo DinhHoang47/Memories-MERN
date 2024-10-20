@@ -14,6 +14,7 @@ export default makeStyles((theme) => ({
   },
   posts: {
     background: "dodgerblue",
+    overflow: "hidden",
     margin: "0 auto",
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(200px, 290px))",

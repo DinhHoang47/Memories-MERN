@@ -13,7 +13,7 @@ export default function Home({ type }) {
   const { posts, loading, error, updatePost } = usePost(type, 2);
   const classes = useStyle();
   return (
-    <div className={`${classes.home}`}>
+    <div className={`${classes.home} ${isPostDetailModalOpen ? "active" : ""}`}>
       <div
         className={`${classes.posts} ${isPostDetailModalOpen ? "active" : ""}`}
       >
