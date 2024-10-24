@@ -1,0 +1,2 @@
+- chuyển postID trên detail modal sang global state không để ở URL để tránh phức tạp khi navigate
+- kiểm tra lại việc logic fetch relatived posts

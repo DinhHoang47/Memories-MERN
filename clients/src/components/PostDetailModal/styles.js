@@ -10,20 +10,14 @@ export default makeStyles((theme) => ({
     },
   },
   postDetailModal: (props) => ({
-    position: "fixed",
-    left: 0,
+    position: "absolute",
+    left: "100%",
     right: 0,
-    bottom: 0,
     pointerEvents: "none",
-    top: "64px",
-    [theme.breakpoints.up("sm")]: {
-      left: "64px",
-    },
-    [theme.breakpoints.up("md")]: {
-      left: "240px",
-    },
+    top: 0,
+    transition:"all ease-in 0.3s",
     "&.active": {
-      right: 0,
+      left: 0,
       pointerEvents: "visible",
     },
     "& .container": {
@@ -37,7 +31,6 @@ export default makeStyles((theme) => ({
   }),
   postContainer: {
     background: "blue",
-    position: "absolute",
     left: "100%",
     width: "100%",
     "&.active": {

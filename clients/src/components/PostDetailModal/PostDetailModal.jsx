@@ -38,17 +38,6 @@ export default function PostDetailModal() {
   };
   // Lifecycle logics
   let postId = getPostId();
-  useEffect(() => {
-    const handlePopState = () => {
-      setCurrentPostId(getPostId());
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    if (postId) {
-      setCurrentPostId(postId);
-    }
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, [postId]);
   // Debug
   return (
     <div

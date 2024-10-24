@@ -28,7 +28,7 @@ const useRelatedPosts = (postTags, postTitle, postId) => {
 
   useEffect(() => {
     getRelatedPosts();
-  }, [postId, postTags, postId]);
+  }, [postId, postTags]);
   return { relatedPosts, loading, error };
 };
 
