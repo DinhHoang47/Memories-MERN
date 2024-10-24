@@ -1,0 +1,1 @@
+- Project objective is for self-learning react and coding
